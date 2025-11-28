@@ -84,9 +84,12 @@ public class BookHandler implements HttpHandler {
         return bos.toString(StandardCharsets.UTF_8);
     }
 
-    private static void SendJson(HttpExchange ex, int State, String json) throws IOException { 
-    byte[] out = json.getBytes(StandardCharsets.UTF_8);
-        ex.sendResponseHeaders(State, out.length);
+    private static void SendJson(HttpExchange ex, int status, String json) throws IOException {
+        byte[] out = json.getBytes(StandardCharsets.UTF_8);
+// TODO: Set CORS headers and remove * catch all origin​
+        ex.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
+        ex.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
+        ex.sendResponseHeaders(status, out.length);
         ex.getResponseBody().write(out);
         ex.getResponseBody().close();
     }
@@ -100,4 +103,6 @@ public class BookHandler implements HttpHandler {
         String State;
 
     }
+    
+    
 }

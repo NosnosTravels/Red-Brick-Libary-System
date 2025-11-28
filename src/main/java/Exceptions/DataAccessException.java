@@ -11,6 +11,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import Database.ConnectionImpl;
+import book.BookFormat;
+import book.BookState;
 import book.ISBN;
 
 
@@ -19,6 +21,9 @@ import book.ISBN;
  * @author M2200478
  */
 public class DataAccessException extends RuntimeException{
+
+    public DataAccessException(String database_timeout, SQLException ex) {
+    }
  private static final Logger LOGGER = LoggerFactory.getLogger(DataAccessException.class);
 
     private static final String FIND_ALL = "SELECT ISBN, Title, Author, Format, State FROM Books";
@@ -36,16 +41,12 @@ public class DataAccessException extends RuntimeException{
 
         } catch (SQLTimeoutException ex) {
             LOGGER.error("Database timeout while fetching books", ex);
-            throw new DataAccessException("Database timeout", ex);
         } catch (SQLSyntaxErrorException ex) {
             LOGGER.error("SQL syntax error in FIND_ALL query", ex);
-            throw new DataAccessException("SQL syntax error", ex);
         } catch (SQLException ex) {
             LOGGER.error("General SQL error while fetching books", ex);
-            throw new DataAccessException("SQL error", ex);
         } catch (IllegalArgumentException ex) {
             LOGGER.error("Bad data in books table (enum mapping failed)", ex);
-            throw new DataAccessException("Corrupt book data", ex);
         } catch (RuntimeException ex) {
             LOGGER.error("Unexpected error while fetching books", ex);
             throw ex;
@@ -54,23 +55,35 @@ public class DataAccessException extends RuntimeException{
         return books;
     }
 
-private Book mapRowToBook(ResultSet rs) throws SQLException, IllegalArugmentException {
-    String title = rs.getString("Title");
-    String author = rs.getString("Author");
-    String isbnStr = rs.getString("ISBN");
-
-    ISBN isbn = new ISBN(isbnStr); // assumes ISBN has a constructor taking a string
-
-    return new Book(title, author, isbn);
-}
-;
-
-    public DataAccessException(String message, Throwable cause) {
-        super(message, cause);
+//private Book mapRowToBook(ResultSet rs) throws SQLException, IllegalArugmentException {
+//    Book book = new Book(title, author, isbn);
+//    String title = rs.getString("Title"");
+//    String author = rs.getString("Author");
+//    String isbnStr = rs.getString("ISBN");
+//
+//    ISBN isbn = new ISBN(isbnStr); // assumes ISBN has a constructor taking a string
+//
+//    return new Book(title, author, isbn);
+    
+    
+    private Book mapRowToBook(ResultSet rs) throws SQLException, IllegalArugmentException {
+        Book book = new Book();
+        book.setIsbn(new ISBN(rs.getString("ISBN")));
+        book.setTitle(rs.getString("title"));
+        book.setAuthor(rs.getString("author"));
+        book.setFormat(BookFormat.valueOf("FORMAT"));
+        book.setState(BookState.valueOf(rs.getString("STATE")));
+        return book;
     }
-
-    public DataAccessException(String message) {
-        super(message);
-    }
 }
+
+//    public DataAccessException(String message, Throwable cause) {
+//        super(message, cause);
+//    }
+//
+//    public DataAccessException(String message) {
+//        super(message);
+//    }
+//}
+    
     

@@ -18,4 +18,8 @@ public class ConnectionImpl {
     public static Connection conn() throws SQLException {
         return DriverManager.getConnection(URL);
     }
+
+    public static Connection con() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

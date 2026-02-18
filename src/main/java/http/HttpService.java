@@ -7,23 +7,25 @@ package http;
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import repositories.BookRepositoryInterface;
+import repositories.BookRepositoryJdbc;
+import repositories.BookService;
 
 /**
  *
  * @author M2200478
  */
-
 public class HttpService {
 
     private static HttpServer server;
 
     public static void startServer(int port) throws IOException {
-        BookRepository bookRepository;
-     bookRepository = new BookRepositoryJdbc();
+        BookRepositoryInterface bookRepository;
+        bookRepository = (BookRepositoryInterface) new BookRepositoryJdbc();
 
-    BookService bookService;
-     bookService = new BookService(bookRepository);
-        
+//        BookService bookService;
+//        bookService = new BookService(bookRepository);
+
         server = HttpServer.create(new InetSocketAddress(port), 0);
         System.out.println("Server started at http://localhost:" + port + "/home");
         registerEndPoints();
@@ -40,6 +42,5 @@ public class HttpService {
         server.createContext("/books", new HomeHandler());
         server.createContext("/books/", new HomeHandler());
     }
-
 
 }

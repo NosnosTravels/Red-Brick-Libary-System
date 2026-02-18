@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package book;
+package repositories;
 
 /**
  *
  * @author M2200478
  */
-public enum BookState {
-    AVAILABLE,
-    BORROWED
+public class BookRepositoryJdbc {
+    public BookRepositoryJdbc(){}
+    
 }

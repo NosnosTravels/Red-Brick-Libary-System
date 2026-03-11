@@ -92,6 +92,7 @@ public class BookHandler implements HttpHandler {
         ex.sendResponseHeaders(status, out.length);
         ex.getResponseBody().write(out);
         ex.getResponseBody().close();
+        //converting the data into json and setting the headers
     }
 
     private static class BookIn {
@@ -104,5 +105,8 @@ public class BookHandler implements HttpHandler {
 
     }
     
+ 
     
+    
+
 }

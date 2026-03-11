@@ -10,7 +10,7 @@ import java.util.Scanner;
  * @author M2200478
  */
 
-ppublic class Book implements BookInterface {
+public class Book implements BookInterface {
 
     private String title;
     private String author;

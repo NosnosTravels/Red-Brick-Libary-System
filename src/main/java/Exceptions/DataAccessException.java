@@ -54,7 +54,17 @@ public class DataAccessException extends RuntimeException{
 
         return books;
     }
-
+    private  Book mapRowToBook(ResultSet rs) throws SQLException, IllegalArugmentException {
+        Book book = new Book();
+        book.setIsbn(new ISBN(rs.getString("ISBN")));
+        book.setTitle(rs.getString("title"));
+        book.setAuthor(rs.getString("author"));
+        book.setFormat(BookFormat.valueOf("FORMAT"));
+        book.setState(BookState.valueOf(rs.getString("STATE")));
+        return book;
+    }
+}
+    
 //private Book mapRowToBook(ResultSet rs) throws SQLException, IllegalArugmentException {
 //    Book book = new Book(title, author, isbn);
 //    String title = rs.getString("Title"");
@@ -66,16 +76,7 @@ public class DataAccessException extends RuntimeException{
 //    return new Book(title, author, isbn);
     
     
-    private Book mapRowToBook(ResultSet rs) throws SQLException, IllegalArugmentException {
-        Book book = new Book();
-        book.setIsbn(new ISBN(rs.getString("ISBN")));
-        book.setTitle(rs.getString("title"));
-        book.setAuthor(rs.getString("author"));
-        book.setFormat(BookFormat.valueOf("FORMAT"));
-        book.setState(BookState.valueOf(rs.getString("STATE")));
-        return book;
-    }
-}
+
 
 //    public DataAccessException(String message, Throwable cause) {
 //        super(message, cause);

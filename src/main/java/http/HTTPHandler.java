@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
  *
  * @author M2200478
  */
-public class HomeHandler implements HttpHandler {
+public class HTTPHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {

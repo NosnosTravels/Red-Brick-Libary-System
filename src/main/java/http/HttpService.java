@@ -4,26 +4,30 @@
  */
 package http;
 
+import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
+import repositories.BookRepositoryInterface;
+import repositories.BookRepositoryJdbc;
+import repositories.BookService;
 
 /**
  *
  * @author M2200478
  */
-
 public class HttpService {
 
     private static HttpServer server;
 
     public static void startServer(int port) throws IOException {
-        BookRepository bookRepository;
-     bookRepository = new BookRepositoryJdbc();
+        BookRepositoryInterface bookRepository;
+        bookRepository = (BookRepositoryInterface) new BookRepositoryJdbc();
 
-    BookService bookService;
-     bookService = new BookService(bookRepository);
-        
+//        BookService bookService;
+//        bookService = new BookService(bookRepository);
+
         server = HttpServer.create(new InetSocketAddress(port), 0);
         System.out.println("Server started at http://localhost:" + port + "/home");
         registerEndPoints();
@@ -36,10 +40,19 @@ public class HttpService {
     }
 
     private static void registerEndPoints() {
-        server.createContext("/", new HomeHandler());
-        server.createContext("/books", new HomeHandler());
-        server.createContext("/books/", new HomeHandler());
+        server.createContext("/", new HTTPHandler());
+        server.createContext("/books", new HTTPHandler());
+        server.createContext("/books/", new HTTPHandler());
     }
-
+    
+    private static void SendJson(HttpExchange ex, int status, String json) throws IOException {
+        byte[] out = json.getBytes(StandardCharsets.UTF_8);
+// TODO: Set CORS headers and remove * catch all origin​
+        ex.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
+        ex.getResponseHeaders().set("Content-Type", "application/json; charset=UTF-8");
+        ex.sendResponseHeaders(status, out.length);
+        ex.getResponseBody().write(out);
+        ex.getResponseBody().close();
+    }
 
 }

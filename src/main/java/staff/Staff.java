@@ -72,12 +72,12 @@ public class Staff implements StaffInterface {
     //Staff Interface Overide
     @Override
     public void FirstName() {
-        System.out.println("Bob");
+        System.out.println("");
     }
 
     @Override
     public void LastName() {
-        System.out.println("Smith");
+        System.out.println("");
     }
 
     @Override
@@ -87,7 +87,7 @@ public class Staff implements StaffInterface {
 
     @Override
     public void StaffAddress() {
-        System.out.println("17 Pennal Grove");
+        System.out.println("");
     }
 
 }

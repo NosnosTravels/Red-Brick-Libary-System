@@ -4,7 +4,7 @@
  */
 package book;
 
-import Exceptions.IllegalArugmentException;
+import Exceptions.IllegalArgumentException;
 import java.util.Objects;        
         
 
@@ -19,15 +19,15 @@ public class ISBN {
         this.value = null;
     }
     
-    public ISBN (String value) throws IllegalArugmentException {
+    public ISBN (String value) throws IllegalArgumentException {
         if (value == null || value.trim().isEmpty()) {
-            throw new IllegalArugmentException("ISBN cannot be blank");
+            throw new IllegalArgumentException("ISBN cannot be blank");
         }
         
         String cleaned = value.trim();
         
         if (!cleaned.matches("[0-9\\-Xx+]")) {
-         throw new IllegalArugmentException("Invalid ISBN format: ");   
+         throw new IllegalArgumentException("Invalid ISBN format: ");   
         }
         this.value = cleaned;
     }

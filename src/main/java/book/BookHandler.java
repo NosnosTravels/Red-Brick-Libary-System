@@ -4,7 +4,7 @@
  */
 package book;
 
-import Exceptions.IllegalArugmentException;
+import Exceptions.IllegalArgumentException;
 import static ch.qos.logback.core.joran.spi.HttpUtil.RequestMethod.POST;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -52,7 +52,7 @@ public class BookHandler implements HttpHandler {
                     return;
                 }
                 SendJson(ex, 405, "{\"error\":\"Method Not Allowed\"}");
-            } catch (IllegalArugmentException ex1) {
+            } catch (IllegalArgumentException ex1) {
                 Logger.getLogger(BookHandler.class.getName()).log(Level.SEVERE, null, ex1);
             }
         }
@@ -67,9 +67,13 @@ public class BookHandler implements HttpHandler {
             if (dto == null || dto.title == null || dto.author == null || dto.format == null) {
                 SendJson(ex, 400, "{\"error\":\"invaldid body\"}");
             }
-            Book created = bookService.create(dto.Isbn, dto.title, dto.author, dto.format);
+            Book created = null;
+            try {
+                created = bookService.create(dto.Isbn, dto.title, dto.author, dto.format);
+            } catch (IllegalArgumentException ex1) {
+                System.getLogger(BookHandler.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex1);
+            }
             SendJson(ex, 201, gson.toJson(created));
-            return;
         }
         SendJson(ex, 405, "{\"error\":\"Method Not Allowed\"}");
     }

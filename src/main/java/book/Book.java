@@ -26,7 +26,7 @@ public class Book implements BookInterface {
         this.State = State;
     }
     public Book() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        
     }
 
     @Override

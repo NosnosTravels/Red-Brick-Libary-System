@@ -24,6 +24,7 @@ public class CreateTables {
         CreateTables.LibaryTable();
         CreateTables.UsersTable();
         CreateTables.BorrowedBooksTable();
+        CreateTables.UpdateBookTable();
     }
 
     public static void EnableForeignKey() {
@@ -46,7 +47,7 @@ public class CreateTables {
         var sql = "CREATE TABLE IF NOT EXISTS Book ("
                 + "	Title TEXT NOT NULL,"
                 + "     Author TEXT NOT NULL,"
-                + "     ISBN INT NOT NULL PRIMARY KEY,"
+                + "     ISBN  NOT NULL PRIMARY KEY,"
                 + "     State TEXT NOT NULL,"
                 + "     Format TEXT NOT NULL"
                 + ");";
@@ -154,6 +155,15 @@ public class CreateTables {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+    
+    public static void UpdateBookTable() {
+        var sql = "UPDATE Book SET\n" 
+            + "Title = TRIM(Title),\n" 
+            + "Author = TRIM(Author),\n" 
+            + "ISBN = TRIM(ISBN),\n" 
+            + "State = TRIM(State),\n" 
+            + "Format = TRIM(Format);";
     }
 
 }

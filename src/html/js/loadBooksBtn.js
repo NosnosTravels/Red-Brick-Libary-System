@@ -1,7 +1,13 @@
-// When the user clicks the button with id="loadBooksBtn"
-// run the LoadBooks() function
-document.getElementById("loadBooksBtn").addEventListener("click", loadBooks);
-console.log("Load Books button event listener added"); // Log a message to confirm the event listener is set up
+document.addEventListener("DOMContentLoaded", function () {
+    var loadBooksButton = document.getElementById("loadBooksBtn");
+
+    if (loadBooksButton) {
+        loadBooksButton.addEventListener("click", loadBooks);
+        console.log("Load Books button event listener added");
+    } else {
+        console.error("Button with id 'loadBooksBtn' was not found");
+    }
+});
 
 async function loadBooks() {
     console.log("Loading books..."); // Log a message to indicate the function has started

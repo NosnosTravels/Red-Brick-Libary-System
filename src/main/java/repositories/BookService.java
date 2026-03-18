@@ -5,7 +5,7 @@
 package repositories;
 
 import static Constants.SQLConstants.FIND_ALL;
-import Exceptions.IllegalArugmentException;
+import Exceptions.IllegalArgumentException;
 import book.Book;
 import book.BookFormat;
 import book.BookState;
@@ -26,9 +26,14 @@ import org.slf4j.Logger;
  * @author M2200478
  */
 public class BookService implements BookRepositoryInterface {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(BookService.class);
-    
+
     private final List<Book> books = new ArrayList<>();
+
+    public BookService(BookRepositoryJdbc jdbc) {
+
+    }
 
     public void save(Book book) {
         books.add(book);
@@ -47,8 +52,8 @@ public class BookService implements BookRepositoryInterface {
         System.out.println("Book not found with ISBN: " + isbn);
         return retVal;
     }
-    
-        @Override
+
+    @Override
     public void update(Book updatedBook) {
         for (int i = 0; i < books.size(); i++) {
             Book existingBook = books.get(i);
@@ -74,39 +79,40 @@ public class BookService implements BookRepositoryInterface {
     @Override
     public List<Book> findAll() {
         List<Book> books = new ArrayList<>();
-        try (Connection con = ConnectionImpl.conn(); 
-            PreparedStatement ps = con.prepareStatement(FIND_ALL); 
-            ResultSet resultSet = ps.executeQuery()) {
-            
-                while (resultSet.next()) {
-                    books.add(mapRowToBook(resultSet));
-                }
-        }catch (SQLException ex) {
-            LOGGER.error("Error");
-            throw new RuntimeException("Unable to fetch books");
-        } catch (IllegalArugmentException ex) {
-            System.getLogger(BookService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-       }
+        try (Connection con = ConnectionImpl.conn(); PreparedStatement ps = con.prepareStatement(FIND_ALL); ResultSet resultSet = ps.executeQuery()) {
+
+            while (resultSet.next()) {
+                books.add(mapRowToBook(resultSet));
+            }
+        } catch (SQLException ex) {
+            LOGGER.error("Error fetching books", ex);
+            throw new RuntimeException("Unable to fetch books", ex);
+        }
         return books;
     }
-    
-    
-    
-    private  Book mapRowToBook(ResultSet rs) throws SQLException, IllegalArugmentException {
+
+    private Book mapRowToBook(ResultSet rs) {
         Book book = new Book();
-        book.setIsbn(new ISBN(rs.getString("ISBN")));
-        book.setTitle(rs.getString("title"));
-        book.setAuthor(rs.getString("author"));
-        book.setFormat(BookFormat.valueOf("FORMAT"));
-        book.setState(BookState.valueOf(rs.getString("STATE")));
+        try {
+            book.setIsbn(new ISBN(rs.getString("ISBN")));
+            book.setTitle(rs.getString("Title"));
+            book.setAuthor(rs.getString("Author"));
+            book.setFormat(BookFormat.valueOf(rs.getString("Format").trim()));
+            book.setState(BookState.valueOf(rs.getString("State").trim()));
+        } catch (SQLException ex) {
+            System.getLogger(BookService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        } catch (IllegalArgumentException e) {
+            LOGGER.warn("We got a problem, IllegalArugment" + e.getMessage());
+        }
+        LOGGER.info(book.toString());
         return book;
     }
 
-    public Book create(ISBN Isbn, String title, String author, String format) {
+    public Book create(ISBN Isbn, String title, String author, String format) throws IllegalArgumentException {
         if (title == null || title.trim().isEmpty()
                 || author == null || author.trim().isEmpty()
-                || format == null || format.trim().isEmpty()){
-            throw new IllegalArgumentException ("missing fields");
+                || format == null || format.trim().isEmpty()) {
+            throw new IllegalArgumentException("missing fields");
         }
         Book b = new Book();
         b.setIsbn(Isbn);
@@ -117,9 +123,7 @@ public class BookService implements BookRepositoryInterface {
         return BookRepositoryInterface.save(b);
     }
 
-
 }
-        
 
 //class bookServices 
 //

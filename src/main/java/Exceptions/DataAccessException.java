@@ -28,7 +28,7 @@ public class DataAccessException extends RuntimeException{
 
     private static final String FIND_ALL = "SELECT ISBN, Title, Author, Format, State FROM Books";
 
-    public List<Book> findAll() throws IllegalArugmentException {
+    public List<Book> findAll() throws IllegalArgumentException {
         List<Book> books = new ArrayList<>();
 
         try (Connection con = ConnectionImpl.conn();
@@ -54,7 +54,7 @@ public class DataAccessException extends RuntimeException{
 
         return books;
     }
-    private  Book mapRowToBook(ResultSet rs) throws SQLException, IllegalArugmentException {
+    private  Book mapRowToBook(ResultSet rs) throws SQLException, IllegalArgumentException {
         Book book = new Book();
         book.setIsbn(new ISBN(rs.getString("ISBN")));
         book.setTitle(rs.getString("title"));

@@ -41,14 +41,15 @@ public class LibaryChalleges {
     static Connection conn;
 
     public static void main(String[] args) throws SQLException, IOException{
-
+//        CreateTables.CreateAllTables();
+//        ToDatabase.FileToDatabase();
         HttpService.startServer(8081);
 //        HttpService.stopServer();
 
 //      Reads the book.txt file
 //          Buffered_Reader.bufferedReader();
 //      Writes the txt file to the database
-//            ToDatabase.FileToDatabase();
+            
         
         
 //    Conencts to the database
@@ -64,7 +65,7 @@ public class LibaryChalleges {
 //        CreateTables.BorrowedBooksTable();
     
 //    Creates all of the tables
-        CreateTables.CreateAllTables();
+        
       
 //    Deletes the database
 //      DropTables.dropDatabase();

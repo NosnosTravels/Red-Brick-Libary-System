@@ -15,24 +15,24 @@ import repositories.BookRepositoryInterface;
 import repositories.BookRepositoryJdbc;
 import repositories.BookService;
 import http.JSHandler;
+import book.BookHandler;
 
 /**
  *
  * @author M2200478
  */
 public class HttpService {
-
     private static HttpServer server;
+    private static BookRepositoryJdbc bookRepo = new BookRepositoryJdbc();
+    private static BookService bookService = new BookService(bookRepo);
 
     public static void startServer(int port) throws IOException, SQLException {
-        BookRepositoryInterface BookService;
-        BookService = (BookRepositoryInterface) new BookService();
 
 //        BookService bookService;
 //        bookService = new BookService(bookRepository);
         ConnectionImpl.conn();
         server = HttpServer.create(new InetSocketAddress(port), 0);
-        System.out.println("Server started at http://localhost:" + port + "/books");
+        System.out.println("Server started at http://localhost:" + port);
         registerEndPoints();
         server.setExecutor(null);
         server.start();
@@ -44,9 +44,9 @@ public class HttpService {
     }
 
     private static void registerEndPoints() {
-        server.createContext("/", new HTTPHandler());
-        server.createContext("/books", new HTTPHandler());
-        server.createContext("/books/", new HTTPHandler());
+        server.createContext("/", new HTTPHandler()); //serves book.html
+        server.createContext("/books", new BookHandler(bookService)); //should be BookHandler, otherwise you're serving book.html again
+//        server.createContext("/books/", new HTTPHandler()); //as above
         server.createContext("/loadBooksBtn", new JSHandler());
     }
     

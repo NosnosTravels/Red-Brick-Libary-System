@@ -19,22 +19,27 @@ import java.nio.file.Paths;
  */
 public class JSHandler implements HttpHandler {
 
-    @Override
+        @Override
     public void handle(HttpExchange exchange) throws IOException {
-        
-        
-        if ("GET".equalsIgnoreCase(exchange.getRequestMethod())){
-            Path JSPath = Paths.get("src/html/js/loadBooksBtn.js");
-            if (Files.exists(JSPath)){ 
-                byte[] JSBytes = Files.readAllBytes(JSPath);
-                exchange.getResponseHeaders().set("Content-Type", "text/javascript");
-                exchange.sendResponseHeaders(200, JSBytes.length);
+        if ("GET".equalsIgnoreCase(exchange.getRequestMethod())) {
+            Path jsPath = Paths.get("src/html/js/loadBooksBtn.js");
+
+            if (Files.exists(jsPath)) {
+                byte[] jsBytes = Files.readAllBytes(jsPath);
+                exchange.getResponseHeaders().set("Content-Type", "application/javascript; charset=UTF-8");
+                exchange.sendResponseHeaders(200, jsBytes.length);
+                exchange.getResponseBody().write(jsBytes);
+                exchange.getResponseBody().close();
+                return;
             } else {
                 exchange.sendResponseHeaders(404, -1);
+                exchange.close();
+                return;
             }
-        } else {
-            exchange.sendResponseHeaders(405, -1);
-        }      
+        }
+
+        exchange.sendResponseHeaders(405, -1);
+        exchange.close();
     }
     
     

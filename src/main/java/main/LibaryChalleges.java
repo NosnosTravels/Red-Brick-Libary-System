@@ -3,6 +3,7 @@
  */
 package main;
 
+import static Constants.SQLConstants.INSERT;
 import static Constants.SQLConstants.URL;
 import SQLiteQueries.CreateTables;
 import SQLiteQueries.DropTables;
@@ -21,6 +22,12 @@ import staff.Address;
 import libary.Libary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ReaderWriter.Buffered_Reader;
+import ReaderWriter.ToDatabase;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.sql.PreparedStatement;
+import http.JSHandler;
 
 
         
@@ -32,18 +39,29 @@ import org.slf4j.LoggerFactory;
 public class LibaryChalleges {
     private static final Logger LOGGER = LoggerFactory.getLogger(LibaryChalleges.class);
     static Connection conn;
-    public static void main(String[] args) throws SQLException{
+
+    public static void main(String[] args) throws SQLException, IOException{
+
+        HttpService.startServer(8081);
+//        HttpService.stopServer();
+
+//      Reads the book.txt file
+//          Buffered_Reader.bufferedReader();
+//      Writes the txt file to the database
+//            ToDatabase.FileToDatabase();
+        
+        
 //    Conencts to the database
 //        connect();
 
 //    Creates the tables
     //    CreateTables.EnableForeignKey();
-    //    CreateTables.BookTable();
+//        CreateTables.BookTable();
     //    CreateTables.MemberTable();
     //    CreateTables.StaffTable();
     //    CreateTables.LibaryTable();
     //    CreateTables.UsersTable();
-    //    CreateTables.BorrowedBooksTable();
+//        CreateTables.BorrowedBooksTable();
     
 //    Creates all of the tables
         CreateTables.CreateAllTables();
@@ -59,7 +77,7 @@ public class LibaryChalleges {
 //        DropTables.DropUsersTable();
 //        DropTables.DropBBTable();
 
-    
+
         
 
     }

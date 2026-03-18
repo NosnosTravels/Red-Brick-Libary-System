@@ -44,10 +44,9 @@ public class CreateTables {
 
         // SQL statement for creating a new table
         var sql = "CREATE TABLE IF NOT EXISTS Book ("
-                + "	id INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "	Title TEXT NOT NULL,"
                 + "     Author TEXT NOT NULL,"
-                + "     ISBN INT NOT NULL,"
+                + "     ISBN INT NOT NULL PRIMARY KEY,"
                 + "     State TEXT NOT NULL,"
                 + "     Format TEXT NOT NULL"
                 + ");";
@@ -144,11 +143,9 @@ public class CreateTables {
                 + "	dateBorrowed DateTime NOT NULL,"
                 + "     dateToReturn DateTime NOT NULL,"
                 + "     MemberID INT NOT NULL,"
-                + "	StaffID INT NOT NULL,"
-                + "     BookID INT NOT NULL,"
-                + "     FOREIGN KEY(StaffID) REFERENCES StaffTable(StaffID),"
+                + "     ISBN INT NOT NULL,"
                 + "     FOREIGN KEY(MemberID) REFERENCES MemberTable(MemberID),"
-                + "     FOREIGN KEY(BookID) REFERENCES BookTable(BookID)"
+                + "     FOREIGN KEY(ISBN) REFERENCES BookTable(ISBN)"
                 + ");";
 //connection to db in the try catch
         try (var conn = DriverManager.getConnection(URL); var stmt = conn.createStatement()) {

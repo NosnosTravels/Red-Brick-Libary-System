@@ -1,17 +1,23 @@
 // When the user clicks the button with id="loadBooksBtn"
-// run the loadBooks() function
+// run the LoadBooks() function
 document.getElementById("loadBooksBtn").addEventListener("click", loadBooks);
+console.log("Load Books button event listener added"); // Log a message to confirm the event listener is set up
+
 async function loadBooks() {
+    console.log("Loading books..."); // Log a message to indicate the function has started
     try {
         const res = await fetch("http://localhost:8081/books"); // Send GET request to your Java backend endpoint
+        console.log("Response status:", res.status); // Log the HTTP status code for debugging
         if (!res.ok) { // If server returns 4xx or 5xx, treat it as an error
             throw new Error(`HTTP error! Status: ${res.status}`);
         }
         const books = await res.json(); // Convert JSON response into JavaScript objects
+        console.log("Books loaded:", books); // Log the loaded books for debugging
         displayBooks(books); // Call the displayBooks function to render the list
     } catch (err) {
         console.error("Failed to load books", err); // Catch network errors or thrown errors
     }
+    console.log("Books loaded");
 }
 // the displayBooks function is on the next slide 
 

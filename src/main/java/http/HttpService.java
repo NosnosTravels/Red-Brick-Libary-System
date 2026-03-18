@@ -8,7 +8,6 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
 import repositories.BookRepositoryInterface;
 import repositories.BookRepositoryJdbc;
 import repositories.BookService;

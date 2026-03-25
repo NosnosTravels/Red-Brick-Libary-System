@@ -27,9 +27,9 @@ public class HTTPHandler implements HttpHandler {
             Path htmlPath = Paths.get("src/html/book.html");
 //            Path JSPath = Paths.get("src/html/js");
             if (Files.exists(htmlPath)){
-                byte[] hymlBytes = Files.readAllBytes(htmlPath);
-                exchange.sendResponseHeaders(200, hymlBytes.length);
-                exchange.getResponseBody().write(hymlBytes);
+                byte[] htmlBytes = Files.readAllBytes(htmlPath);
+                exchange.sendResponseHeaders(200, htmlBytes.length);
+                exchange.getResponseBody().write(htmlBytes);
                 exchange.getResponseBody().close();             
             } else {
                 exchange.sendResponseHeaders(404, -1);

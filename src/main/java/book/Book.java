@@ -15,15 +15,15 @@ public class Book implements BookInterface {
     private String title;
     private String author;
     private ISBN isbn;
-    private BookState State;
-    private BookFormat Format;
+    private BookState state;
+    private BookFormat format;
 
-    public Book(String title, String author, ISBN isbn, BookFormat Format, BookState State) {
+    public Book(String title, String author, ISBN isbn, BookFormat format, BookState state) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
-        this.Format = Format;
-        this.State = State;
+        this.format = format;
+        this.state = state;
     }
     public Book() {
         
@@ -46,15 +46,15 @@ public class Book implements BookInterface {
 
     @Override
     public String toString() {
-        return "Book{" + "title=" + title + ", author=" + author + ", isbn=" + isbn + '}';
+        return "Book{" + "title=" + title + ", author=" + author + ", isbn=" + isbn + ", State=" + state + ", Format=" + format + '}';
     }
 
     public BookState getState() {
-        return State;
+        return state;
     }
 
     public BookFormat getFormat() {
-        return Format;
+        return format;
     }
 
     public void setTitle(String title) {
@@ -70,11 +70,13 @@ public class Book implements BookInterface {
     }
 
     public void setState(BookState State) {
-        this.State = State;
+        this.state = State;
     }
 
     public void setFormat(BookFormat Format) {
-        this.Format = Format;
+        this.format = Format;
     }
+    
+    
 
 }

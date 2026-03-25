@@ -31,9 +31,7 @@ public class BookService implements BookRepositoryInterface {
 
     private final List<Book> books = new ArrayList<>();
 
-    public BookService(BookRepositoryJdbc jdbc) {
-
-    }
+    public BookService(BookRepositoryJdbc jdbc) {}
 
     public void save(Book book) {
         books.add(book);
@@ -79,7 +77,9 @@ public class BookService implements BookRepositoryInterface {
     @Override
     public List<Book> findAll() {
         List<Book> books = new ArrayList<>();
-        try (Connection con = ConnectionImpl.conn(); PreparedStatement ps = con.prepareStatement(FIND_ALL); ResultSet resultSet = ps.executeQuery()) {
+        try (Connection con = ConnectionImpl.conn(); 
+            PreparedStatement ps = con.prepareStatement(FIND_ALL); 
+            ResultSet resultSet = ps.executeQuery()) {
 
             while (resultSet.next()) {
                 books.add(mapRowToBook(resultSet));
@@ -88,13 +88,14 @@ public class BookService implements BookRepositoryInterface {
             LOGGER.error("Error fetching books", ex);
             throw new RuntimeException("Unable to fetch books", ex);
         }
+        LOGGER.info("found books: ", books);
         return books;
     }
 
     private Book mapRowToBook(ResultSet rs) {
         Book book = new Book();
         try {
-            book.setIsbn(new ISBN(rs.getString("ISBN")));
+            book.setIsbn(new ISBN(rs.getString("ISBN").trim()));
             book.setTitle(rs.getString("Title"));
             book.setAuthor(rs.getString("Author"));
             book.setFormat(BookFormat.valueOf(rs.getString("Format").trim()));
@@ -114,13 +115,16 @@ public class BookService implements BookRepositoryInterface {
                 || format == null || format.trim().isEmpty()) {
             throw new IllegalArgumentException("missing fields");
         }
+        
         Book b = new Book();
         b.setIsbn(Isbn);
         b.setTitle(title);
         b.setAuthor(author);
         b.setFormat(BookFormat.valueOf(format));
         b.setState(BookState.AVAILABLE);
+        LOGGER.info("file completed,", books);
         return BookRepositoryInterface.save(b);
+       
     }
 
 }

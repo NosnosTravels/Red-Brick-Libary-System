@@ -26,7 +26,7 @@ public class ISBN {
         
         String cleaned = value.trim();
         
-        if (!cleaned.matches("[0-9\\-Xx+]")) {
+        if (!cleaned.matches("[0-9\\-Xx]+")) {
          throw new IllegalArgumentException("Invalid ISBN format: ");   
         }
         this.value = cleaned;
@@ -36,7 +36,7 @@ public class ISBN {
     }
     
     public String getDigitsOnly() {
-        return value == null ? null : value.replace("-", " ");
+        return value == null ? null : value.replace("-", "");
     }
     
     @Override

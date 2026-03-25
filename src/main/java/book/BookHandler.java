@@ -105,7 +105,7 @@ public class BookHandler implements HttpHandler {
         String title;
         String author;
         String format;
-        String State;
+        String state;
 
     }
     

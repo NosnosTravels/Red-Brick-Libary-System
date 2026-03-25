@@ -19,6 +19,7 @@ async function loadBooks() {
         }
         const books = await res.json(); // Convert JSON response into JavaScript objects
         console.log("Books loaded:", books); // Log the loaded books for debugging
+
         displayBooks(books); // Call the displayBooks function to render the list
     } catch (err) {
         console.error("Failed to load books", err); // Catch network errors or thrown errors
@@ -50,9 +51,10 @@ function displayBooks(books) {
    <strong>${book.title}</strong><br>
    Author: ${book.author}<br>
    ISBN: ${book.isbn?.value}<br>
-   Format: ${book.format}<br>
-   State: ${book.state}
+   Format: ${book.Format}<br>
+   State: ${book.State}
   `;
+
         // The ISBN has a ? after it because it is an optional field in the Java backend. If the field is null, it will not try to access .value and will instead show "ISBN: undefined".
         // the alternative is to do a conditional check before adding the line for ISBN or use a ternary operator.
         // book.isbn ? book.isbn.value : undefined

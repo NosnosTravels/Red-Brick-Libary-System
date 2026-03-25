@@ -51,8 +51,8 @@ function displayBooks(books) {
    <strong>${book.title}</strong><br>
    Author: ${book.author}<br>
    ISBN: ${book.isbn?.value}<br>
-   Format: ${book.Format}<br>
-   State: ${book.State}
+   Format: ${book.format}<br>
+   State: ${book.state}
   `;
 
         // The ISBN has a ? after it because it is an optional field in the Java backend. If the field is null, it will not try to access .value and will instead show "ISBN: undefined".

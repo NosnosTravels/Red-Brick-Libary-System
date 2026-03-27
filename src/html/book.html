@@ -9,25 +9,30 @@
         <script src="/loadBooksBtn.js"></script>
     </head>
 
-    <body class="font-sans bg-[#261f10] m-0 p-5">
+    <body class="font-sans bg-[#9caf88]  m-0 p-5">
         <header>
-            <h1 class="text-center">Library — Book Browser</h1>
+            <h1 class="text-center text-black rounded-md cursor-pointer block mx-auto mt-5 text-base bg-green-300">Library — Book Browser</h1>
         </header>
 
         <main>
             <button id="loadBooksBtn"
-                    class="px-5 py-3 bg-[#2f3b7a] text-black rounded-md cursor-pointer block mx-auto mt-5 text-base hover:bg-indigo-700" onclick="loadBooks()">
+                    class="px-5 py-3  border-4 border-solid bg-green-100 text-black rounded-md cursor-pointer block mx-auto mt-5 text-base hover:bg-green-300" 
+                    onclick="loadBooks()">
                 Load All Books
             </button>
-            <button id="SearchBarBtn"
-                    class="px-5 py-3 bg-[#2f3b7a] text-black rounded-md cursor-pointer block mx-auto mt-5 text-base hover:bg-indigo-700" onclick="toggleSearchBar()">
-                Search Books
-            <div id="booksContainer" class="mt-5 max-w-[600px] mx-auto "></div>
+
+            <div id="search-component" class="align-content: center">
+                <input id="search-input" placeholder="Search books..." class="border-2 border-solid">
+                <button id="search-button" onclick="SearchButton()" class="border-2 border-solid  bg-green-100 hover:bg-green-300">Search</button>
+            </div>
+
+            <div id="booksContainer" class="mt-5 max-w-[600px] mx-auto"></div>
         </main>
 
     </body>
 
-    <footer class="bg-gray-100 p-8">
+    <footer class="bg-gray-100 p-8 ">
+        <!-- sticky bottom-0 mt-10 -->
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 

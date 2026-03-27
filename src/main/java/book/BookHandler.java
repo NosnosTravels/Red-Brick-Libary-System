@@ -45,10 +45,17 @@ public class BookHandler implements HttpHandler {
         if (path.startsWith("/books/") && path.length() > "/books/".length()) {
             try {
                 String ISBNStr = path.substring("/books/".length());
-                ISBN Isbn = new ISBN(ISBNStr);
+                ISBN isbn = new ISBN(ISBNStr);
                 if (GET.name().equals(method)) {
-                    List<Book> matches = bookService.findByIsbn(Isbn);
-                    SendJson(ex, 200, gson.toJson(matches));
+//                    List<Book> matches = bookService.findByIsbn(Isbn);
+//                    SendJson(ex, 200, gson.toJson(matches));
+                    List<Book> matches = bookService.findByIsbn(isbn);
+                    if (matches.isEmpty()) {
+                        SendJson(ex, 404, "{\"error\":\"Book not found\"}");
+                        return;
+                    }
+                    Book found = matches.get(0);
+                    SendJson(ex, 200, gson.toJson(found));
                     return;
                 }
                 SendJson(ex, 405, "{\"error\":\"Method Not Allowed\"}");

@@ -46,8 +46,8 @@ public class HttpService {
     private static void registerEndPoints() {
         server.createContext("/", new HTTPHandler()); //serves book.html
         server.createContext("/books", new BookHandler(bookService)); //should be BookHandler, otherwise you're serving book.html again
-//        server.createContext("/books/", new HTTPHandler()); //as above
-        server.createContext("/loadBooksBtn", new JSHandler());
+        server.createContext("/loadBooksBtn", new JSHandler()); //as above
+        server.createContext("/books/", new BookHandler(bookService));
     }
     
     private static void SendJson(HttpExchange ex, int status, String json) throws IOException {

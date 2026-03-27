@@ -17,6 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import Constants.SQLConstants;
+import static Constants.SQLConstants.FIND_BY_ISBN;
 import Database.ConnectionImpl;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -40,16 +41,55 @@ public class BookService implements BookRepositoryInterface {
 
     @Override
     public List<Book> findByIsbn(ISBN isbn) {
-        List<Book> retVal = new ArrayList<>();
-        for (Book b : books) {
-            if (b.getISBN().equals(isbn)) {
-                retVal.add(b);
+//        List<Book> books = new ArrayList<>();
+        
+        try (Connection con = ConnectionImpl.conn();
+            PreparedStatement ps = con.prepareStatement(FIND_BY_ISBN)) {
+            
+            ps.setString(1, isbn.getValue());
+            ResultSet rs = ps.executeQuery();
+            
+            while(rs.next()) {
+                books.add(mapRowToBook(rs));
             }
+        }  catch (SQLException ex) {
+            throw new RuntimeException("Unable to fetch book", ex);
         }
-
-        System.out.println("Book not found with ISBN: " + isbn);
-        return retVal;
+        return books;        
     }
+    
+//        List<Book> retVal = new ArrayList<>();
+//        for (Book b : books) {
+//            if (b.getISBN().equals(isbn)) {
+//                retVal.add(b);
+//                return retVal;   
+//            }
+//        }
+//        return retVal; 
+//    }   
+    
+    
+    
+    
+    
+//        try{Connection con = ConnectionImpl.conn();
+//            PreparedStatement ps = con.prepareStatement(FIND_BY_ISBN); 
+//            ps.setString(1, isbn.getValue());
+//            ResultSet rs = ps.executeQuery();
+//            
+//            while(rs.next()){
+//                books.add(mapRowToBook(rs));
+//            }
+//        } catch (SQLException ex) {
+//            System.getLogger(BookService.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+//            throw new RuntimeException("Uable to fetch book", ex);
+//        }
+//        return books;
+ 
+//
+//        System.out.println("Book not found with ISBN: " + isbn);
+//        return retVal;
+//    }
 
     @Override
     public void update(Book updatedBook) {

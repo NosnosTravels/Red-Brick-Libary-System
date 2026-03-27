@@ -1,11 +1,29 @@
 document.addEventListener("DOMContentLoaded", function () {
     var loadBooksButton = document.getElementById("loadBooksBtn");
+    console.log("books", loadBooksButton); // Log the button element to verify it was found
+    var searchButton = document.getElementById("search-button");
+    var searchInput = document.getElementById("search-input");
 
     if (loadBooksButton) {
         loadBooksButton.addEventListener("click", loadBooks);
         console.log("Load Books button event listener added");
     } else {
         console.error("Button with id 'loadBooksBtn' was not found");
+    }
+    if (searchButton) {
+        searchButton.addEventListener("click", SearchBooks);
+        console.log("Search button event listener added");
+    } else {
+        console.error("Button with id 'search-button' was not found");
+    }
+    if (searchInput) {
+        searchInput.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+                SearchBooks();
+            }
+        });
+    } else {
+        console.error("Input with id 'search-input' was not found");
     }
 });
 
@@ -18,11 +36,12 @@ async function loadBooks() {
             throw new Error(`HTTP error! Status: ${res.status}`);
         }
         const books = await res.json(); // Convert JSON response into JavaScript objects
+        displayBooks(books); // Call the displayBooks function to render the list
         console.log("Books loaded:", books); // Log the loaded books for debugging
 
-        displayBooks(books); // Call the displayBooks function to render the list
+
     } catch (err) {
-        console.error("Failed to load books", err); // Catch network errors or thrown errors
+        // console.error("Failed to load books", err); // Catch network errors or thrown errors
     }
     console.log("Books loaded");
 }
@@ -50,7 +69,7 @@ function displayBooks(books) {
         div.innerHTML = `
    <strong>${book.title}</strong><br>
    Author: ${book.author}<br>
-   ISBN: ${book.isbn?.value}<br>
+   ISBN: ${book.isbn?.value || book.isbn ||"N/A"}<br>
    Format: ${book.format}<br>
    State: ${book.state}
   `;
@@ -63,3 +82,32 @@ function displayBooks(books) {
         container.appendChild(div);
     });
 }
+
+function SearchBooks() {
+    const searchInput = document.getElementById("search-input");
+    const isbn = searchInput.value.trim();
+
+    if (!isbn) {
+        console.error("No ISBN entered");
+        return;
+    }
+    SearchButton(isbn);
+}
+
+async function SearchButton(isbn) {
+    const searchButton = document.getElementById("search-button");
+    console.log("Searching for book with ISBN:", isbn); // Log the ISBN being searched for
+    try {
+        const res = await fetch(`http://localhost:8081/books/${isbn}`);
+        if (!res.ok) {
+            throw new Error(`HTTP error! Status: ${res.status}`);
+        }
+        const book = await res.json();
+        displayBooks([book]);
+    } catch (err) {
+        console.error("Failed to search book by ISBN", err);
+    }
+    console.log("Book returned from backend:", book);
+
+}
+

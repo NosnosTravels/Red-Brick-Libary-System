@@ -4,7 +4,10 @@
  */
 package book;
 
-import Exceptions.IllegalArgumentException;
+import static Constants.SQLConstants.DELETE;
+import Database.ConnectionImpl;
+import book.Book;
+import java.lang.IllegalArgumentException;
 import static ch.qos.logback.core.joran.spi.HttpUtil.RequestMethod.POST;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -18,24 +21,22 @@ import repositories.BookService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import book.ISBN;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-
 
 /**
  *
  * @author M2200478
  */
+
 public class BookHandler implements HttpHandler {
 
-    private final BookService bookService;
+    private final BookService bookService = new BookService();
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-    public BookHandler(BookService bookService) {
-        this.bookService = bookService;
-    }
-
+                
+   
     @Override
     public void handle(HttpExchange ex) throws IOException {
         String method = ex.getRequestMethod();
@@ -59,31 +60,74 @@ public class BookHandler implements HttpHandler {
                     return;
                 }
                 SendJson(ex, 405, "{\"error\":\"Method Not Allowed\"}");
+                return;
             } catch (IllegalArgumentException ex1) {
                 Logger.getLogger(BookHandler.class.getName()).log(Level.SEVERE, null, ex1);
+                return;
             }
         }
-        if (GET.name().equals(method)) {
+        else if (GET.name().equals(method)) {
             List<Book> books = bookService.findAll();
             SendJson(ex, 200, gson.toJson(books));
             return;
         }
-        if (POST.name().equals(method)) {
+
+        else if (POST.name().equals(method)) {
             String body = readAll(ex.getRequestBody());
             BookIn dto = gson.fromJson(body, BookIn.class);
+
             if (dto == null || dto.title == null || dto.author == null || dto.format == null) {
                 SendJson(ex, 400, "{\"error\":\"invaldid body\"}");
+                return;
             }
-            Book created = null;
+
             try {
-                created = bookService.create(dto.Isbn, dto.title, dto.author, dto.format);
-            } catch (IllegalArgumentException ex1) {
-                System.getLogger(BookHandler.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex1);
+                bookService.create(dto);
+                SendJson(ex, 200, "{\"message\":\"Successfully Deleted\"}");
+                return;
+            } catch (Exception e) {
+                SendJson(ex, 500, "{\"error\":\"Delete Failed\"}");
             }
-            SendJson(ex, 201, gson.toJson(created));
+                return;
         }
-        SendJson(ex, 405, "{\"error\":\"Method Not Allowed\"}");
-    }
+//            Book created = null;
+//            try {
+//                created = bookService.create(dto.Isbn, dto.title, dto.author, dto.format);
+//            } catch (IllegalArgumentException ex1) {
+//                Logger.getLogger(BookHandler.class.getName()).log(Level.SEVERE, null, ex1);
+//                return;
+//            }
+
+        else if ("DELETE".equals(method)) {
+            String body = readAll(ex.getRequestBody());
+            BookIn dto = gson.fromJson(body, BookIn.class);
+
+            if (dto.Isbn == null) {
+                SendJson(ex, 400, "{\"error\":\"Invalid body\"}");
+                return;
+            }
+            try {
+                bookService.deleteByIsbn(dto.Isbn);
+                SendJson(ex, 200, "{\"message\":\"Successfully Deleted\"}");
+                return;
+            } catch (Exception e) {
+                SendJson(ex, 500, "{\"error\":\"Delete Failed\"}");
+            }
+            return;
+        }
+        else if (POST.equals(method)) {
+                String body = readAll(ex.getRequestBody());
+                BookIn dto = gson.fromJson(body, BookIn.class);
+            try {
+                bookService.create(dto);
+                SendJson(ex, 200, "{\"message\":\"Successfully Deleted\"}");
+                return;
+            } catch (Exception e) {
+                SendJson(ex, 500, "{\"error\":\"Delete Failed\"}");
+            }
+            return;
+        }
+    }    
 
     private static String readAll(InputStream in) throws IOException {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -106,18 +150,10 @@ public class BookHandler implements HttpHandler {
         //converting the data into json and setting the headers
     }
 
-    private static class BookIn {
-
-        ISBN Isbn;
-        String title;
-        String author;
-        String format;
-        String state;
-
-    }
     
  
     
     
+
 
 }

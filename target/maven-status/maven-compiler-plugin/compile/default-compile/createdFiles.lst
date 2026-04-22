@@ -1,12 +1,12 @@
 ReaderWriter\Buffered_Reader.class
 http\HttpService.class
 repositories\BookService.class
+book\BookIn.class
 main\LibaryChalleges.class
 staff\Address.class
 libary\Libary.class
 book\BookFormat.class
 Sanitisation\StringSanitsation.class
-book\BookHandler$BookIn.class
 SQLiteQueries\CreateTables.class
 repositories\MemberRepository.class
 libaryInterfaces\StaffInterface.class

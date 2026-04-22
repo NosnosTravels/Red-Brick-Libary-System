@@ -14,11 +14,11 @@ import java.sql.PreparedStatement;
 public class SQLConstants {
     public static final String URL = "jdbc:sqlite:src/database/database.db";
     
-    public static final String INSERT = "INSERT INTO Book(title, author, isbn,  format, state) VALUES (?,?,?,?,?);";
+    public static final String INSERT = "INSERT INTO Book(title, author, isbn, state, format) VALUES (?,?,?,?,?);";
     public static final String FIND_BY_ISBN = "SELECT ISBN, Title, Author, Format, State FROM Book WHERE REPLACE(ISBN, ' ', '') = ?;";
     public static final String FIND_ALL = "SELECT Title, Author, ISBN, State, Format  FROM Book;";
     public static final String UPDATE = "UPDATE Book SET Title =?, SET Author =?, SET Format =?, SET State =? WHERE ISBN =?;";
-    public static final String DELETE = "DELETE FROM Book WHERE ISBN =?;";
+    public static final String DELETE = "DELETE FROM Book WHERE REPLACE(ISBN, ' ', '') = ?;";
 //    The question marks above are placeholders to be set later
     
 //    Examople how to use

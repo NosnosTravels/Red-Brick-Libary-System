@@ -4,9 +4,15 @@
  */
 package repositories;
 
+import Constants.SQLConstants;
+import Database.ConnectionImpl;
 import book.Book;
+import book.BookIn;
 import book.ISBN;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
+import repositories.BookService;
 
 /**
  *
@@ -19,9 +25,6 @@ public interface BookRepositoryInterface {
     void update(Book book);
     void deleteByIsbn(ISBN isbn);
     
-    static Book save(Book b){
-        
-        return b;
-        
-    }
+    BookIn save(BookIn b) throws SQLException;
+
 }

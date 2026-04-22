@@ -6,10 +6,11 @@
         <title>Library — Fetch Books</title>
         <link rel="stylesheet" href="styles.css" />
         <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+        <script src="https://cdn.tailwindcss.com"></script>
         <script src="/loadBooksBtn.js"></script>
     </head>
 
-    <body class="font-sans bg-[#9caf88]  m-0 p-5">
+    <body class="font-sans bg-white p-1">
         <header>
             <h1 class="text-center text-black rounded-md cursor-pointer block mx-auto mt-5 text-base bg-green-300">Library — Book Browser</h1>
         </header>
@@ -21,17 +22,28 @@
                 Load All Books
             </button>
 
-            <div id="search-component" class="align-content: center">
+            <div id="search-component" 
+                class="align-content: center mt-1 max-w-[600px] ml-3">
                 <input id="search-input" placeholder="Search books..." class="border-2 border-solid">
                 <button id="search-button" onclick="SearchButton()" class="border-2 border-solid  bg-green-100 hover:bg-green-300">Search</button>
             </div>
+            
+            <div id="CreateBookButtonDiv" class="mt-1 max-w-[600px] ml-3">
+                <button id="CreateBookBtn" class="px-5 py-3  border-4 border-solid bg-green-100 text-black rounded-md cursor-pointer block mx-auto mt-5 text-base hover:bg-green-300" 
+                    onclick="CreateBook()">
+                    Create Book
+                </button>
+            </div>
+        </br>
 
-            <div id="booksContainer" class="mt-5 max-w-[600px] mx-auto"></div>
+        <div id="CreateBookContainer" class="mt-1 max-w-[600px] ml-3">
+            <div id="booksContainer" class="mt-1 max-w-[600px] ml-3"></div>
+        </div>
         </main>
 
     </body>
 
-    <footer class="bg-gray-100 p-8 ">
+    <footer class="bg-gray-100 p-8 static bottom-100 mt-10">
         <!-- sticky bottom-0 mt-10 -->
         <div class="max-w-7xl mx-auto">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">

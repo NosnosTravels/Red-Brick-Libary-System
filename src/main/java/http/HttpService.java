@@ -23,8 +23,6 @@ import book.BookHandler;
  */
 public class HttpService {
     private static HttpServer server;
-    private static BookRepositoryJdbc bookRepo = new BookRepositoryJdbc();
-    private static BookService bookService = new BookService(bookRepo);
 
     public static void startServer(int port) throws IOException, SQLException {
 
@@ -45,9 +43,9 @@ public class HttpService {
 
     private static void registerEndPoints() {
         server.createContext("/", new HTTPHandler()); //serves book.html
-        server.createContext("/books", new BookHandler(bookService)); //should be BookHandler, otherwise you're serving book.html again
+        server.createContext("/books", new BookHandler()); //should be BookHandler, otherwise you're serving book.html again
         server.createContext("/loadBooksBtn", new JSHandler()); //as above
-        server.createContext("/books/", new BookHandler(bookService));
+        server.createContext("/books/", new BookHandler());
     }
     
     private static void SendJson(HttpExchange ex, int status, String json) throws IOException {
